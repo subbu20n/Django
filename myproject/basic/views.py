@@ -170,16 +170,43 @@ def filterStudentsByCity(request):
 import math 
 
 def pagination(request): 
-    data = ['apple','banana','carrot','grapes','watermelon','kiwi','pineapple','custardapple','strawberry','blueberry','dragonfruit'] 
+      data = ['apple','banana','carrot','grapes','watermelon','kiwi','pineapple','custardapple','strawberry','blueberry','dragonfruit'] 
 
-page=int(request.GET.get("page"),1) 
-limit=int(request.GET.get("limit"),3) 
+      page=int(request.GET.get("page",1)) 
+      limit=int(request.GET.get("limit",3))  
+ 
+      start=(page-1)*limit  
+      end=page*limit 
+      total_pages=math.ceil(len(data)/limit) 
 
-start=(page-1)*limit  
-end=page*limit 
-total_pages=math.ceil(len(data)/limit) 
+      result=data[start:end] 
 
-result=data[start:end] 
+      res={"status":"success","page":"current_page","total_pages":"total_pages","data":result}
+      return JsonResponse(res,status=202)  
 
-res={"status":"success","page":"current_page","total_pages":"total_pages","data":"result"}
-return JsonResponse(res) 
+#{"status": "success", "page": "current_page", "total_pages": "total_pages", "data": ["apple", "banana", "carrot"]}
+
+
+# we know how to build APi now 
+# now we need to test the api in postman/ thunder  
+
+#-------------------------postman---------------------
+
+#postman: api tesing platform, frequently used by the backend developers 
+# we can use the how can use the through the "web app"
+
+# as a backend developer  
+# 1.how to build apis 
+# 2. hot to test them 
+# 3. how to make documentation 
+
+# api url----> 
+
+# postman---->signup---->verification---->proceed 
+
+# create workspace 
+# make new http request by clicking new 
+# make api call 
+# if any error---> then download postman desktop agent 
+# errors will resolve and postman will works 
+ 
