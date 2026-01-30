@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from basic.views import createEmployee,createProduct,home ,about,sample,sample1,productInfo,filteringData,filterStudentsByCity,pagination,createData
-
+from newapp.views import orderPlacing
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/',home,name='home'),
@@ -29,7 +29,8 @@ urlpatterns = [
      path('students/',filterStudentsByCity),
      path('pagination/',pagination),
      path('create/',createData), 
-     path('productcreate/',createProduct),
-     path('emp/',createEmployee)
+     path('productcreate/',createProduct), 
+     path('emp/',createEmployee),
+     path('order/',orderPlacing)
 ]
  
