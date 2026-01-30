@@ -14,3 +14,13 @@ class OrderDetails(models.Model):
 
 #uuid1 --> generates a random number based on time and mac  
  
+#------------(23-12-2025)----CREATING,INSERTING & get all recording into table in db------------------
+
+#create an api to book a movie ticket with fields --> movie name, showtime, screen name,date and time, transactionid 
+
+class movieBooking(models.Model): 
+    moviename=models.CharField(max_length=150)
+    showtime=models.CharField(max_length=100)
+    screenname=models.CharField(max_length=100)
+    dateandtime=models.DateTimeField(auto_now_add=True) 
+    transaction_id=models.UUIDField(default=uuid.uuid4,editable=False,unique=True)   

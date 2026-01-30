@@ -17,20 +17,30 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from basic.views import createEmployee,createProduct,home ,about,sample,sample1,productInfo,filteringData,filterStudentsByCity,pagination,createData
-from newapp.views import orderPlacing
+from newapp.views import getMoviesByMultipleScreens,getMoviesByScreenname,getMultipleOrdersByStatus,orderPlacing,BookMyShow,GetOrders,BookingDetails,getStudentsById,getStudentsbyId,getStudentsByDegree,getStudentsbyId
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/',home,name='home'),
     path('about/',about,name='about'), 
     path('sample/',sample) ,
-     path('sample1/',sample1) ,
+     path('sample1/',sample1) , 
      path('product/',productInfo),
-     path('filter/',filteringData) ,
+     path('filter/',filteringData) , 
      path('students/',filterStudentsByCity),
      path('pagination/',pagination),
      path('create/',createData), 
-     path('productcreate/',createProduct), 
+     path('productcreate/',createProduct),   
      path('emp/',createEmployee),
-     path('order/',orderPlacing)
-]
- 
+     path('order/',orderPlacing),
+     path('bookticket/',BookMyShow),
+     path('getorder/',GetOrders),
+     path('getbookings/',BookingDetails),
+     path('getstudent/<int:id>',getStudentsById),
+     path('degree/<str:degree>',getStudentsByDegree),
+     path('id/<int:id>',getStudentsbyId),
+     path('orders/<str:status>',getMultipleOrdersByStatus),
+     path('moviebyscreen/<str:screen>',getMoviesByScreenname),
+     path('moviebyscreens/<str:first>/<str:second>',getMoviesByMultipleScreens)
+] 
+
+  
