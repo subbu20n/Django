@@ -1,5 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse 
+import json
+from django.views.decorators.csrf import csrf_exempt 
+
+from django.db import IntegrityError
+from basic.models import userprofile
+
+
 # Create your views here.
 def home(request): 
     return render(request,'home.html') 
@@ -210,3 +217,57 @@ def pagination(request):
 # if any error---> then download postman desktop agent 
 # errors will resolve and postman will works 
  
+
+
+# -----------(17-12-2025)---models & insert data into the table using ORM"-------- 
+@csrf_exempt 
+def createData(request): 
+   if request.method=="POST":
+       data=json.loads(request.body) 
+       print(data) 
+       return JsonResponse({"status":"success","data":data,"statuscode":201})    
+   
+
+@csrf_exempt 
+def createProduct(request): 
+   if request.method=="POST":
+       data=json.loads(request.body) 
+       print(data) 
+       return JsonResponse({"status":"success","data":data,"statuscode":201})   
+   
+# ORM methods instead of manual queries  
+#1. need to create object(row) with multiple fields(columns) and insert it in the table 
+
+#---------to insert 'data' in table ' write logic 
+
+from basic.models import userprofile  
+@csrf_exempt 
+def createData(request):
+    try: 
+        if request.method=="POST": 
+            data=json.loads(request.body) #dictionary 
+            name=data.get("name") 
+            age=data.get("age") 
+            city=data.get("city") 
+            userprofile.objects.create(name=name,age=age,city=city)
+            print(data) 
+            return JsonResponse({"status":"success","data":data,"statuscode":201},status=201)
+    except Exception as e: 
+        return JsonResponse({"statuscode":500,"message":"internal server error"})   
+   
+from basic.models import userprofile,Employee
+
+@csrf_exempt 
+def createEmployee(request): 
+    try: 
+        if request.method=="POST": 
+            data=json.loads(request.body)
+            Employee.objects.create(emp_name=data.get("name"),emp_salary=data.get("sal"),emp_email=data.get("email")) 
+            print(data) 
+            return JsonResponse({"status":"success","data":data,"statuscode":201},status=201) 
+    except IntegrityError as e: 
+        return  JsonResponse({"status":"error","message":"inputs are invalid or not acceptable"})
+  
+    except Exception as e: 
+        return JsonResponse({"status":"error","message":str(e)},status=500)  
+    finally("done")
