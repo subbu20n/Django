@@ -251,7 +251,8 @@ def createData(request):
             city=data.get("city") 
             userprofile.objects.create(name=name,age=age,city=city)
             print(data) 
-            return JsonResponse({"status":"success","data":data,"statuscode":201},status=201)
+            
+        return JsonResponse({"status":"success","data":data,"statuscode":201},status=201)
     except Exception as e: 
         return JsonResponse({"statuscode":500,"message":"internal server error"})   
    
@@ -271,3 +272,82 @@ def createEmployee(request):
     except Exception as e: 
         return JsonResponse({"status":"error","message":str(e)},status=500)  
     #finally("done") 
+
+
+#-------(30-12-2025)--------------Update and Delete operation--------------------     
+
+# CRUD 
+
+# c and r 
+
+# create DATA in TABLE 
+# modelname.objects.create()
+# GETDATA from table ----> modelname.objects.values() 
+# Get Filtereddata ---> modelname.objects.filter(FIELD=VALUE).values()  
+
+#-----------update----------------- 
+# ID, Name, CITY 
+# with reference of ID ---> want tp update city wih new value 
+
+# modelname.objects.filter(REF_ID=VALUE).UPDATE(CITY=NEW_CITY) 
+# modelname.objects.filter(ref_field_value).UPDATE(UPDATING_FIELD_VALUE) 
+
+# this will update the all matched records  
+
+# we need to send the data of "usersprofile" 
+
+# ----now i want to update city name as per ID --- 
+@csrf_exempt  
+def UpdateUserCityId(request): 
+   try: 
+       if request.method=="PUT": 
+           input_data=json.loads(request.body)
+           ref_id=input_data["id"] 
+           new_city=input_data["new_city"] 
+           update=userprofile.objects.filter(id=ref_id).update(city=new_city) 
+           if update==0: 
+               msg="no records found" 
+           else: 
+               msg="record update" 
+           print(update) 
+           return JsonResponse({"status":"success","msg":msg},status=200) 
+       return JsonResponse({"status":"failure","msg":"only put method is allowed"},status=400) 
+   except Exception as e: 
+       return JsonResponse({"status":"error","message":"something went wrong"}) 
+ 
+
+@csrf_exempt
+def updateUseragebyId(request,ref_id): 
+    try: 
+        if request.method=="PUT": 
+            input_data=json.loads(request.body)
+            ref_id=input_data["id"] 
+            new_age=input_data["new_age"] 
+            
+            update = userprofile.objects.filter(id=ref_id).update(age=new_age)
+            if update == 0:
+                msg="no record found with referrence of id"
+            else:
+                msg="record is updated successfully"
+            return JsonResponse({"status":"success","msg":msg},status=200)
+        return JsonResponse({"status":"failure",":msg":"only put method is allowed"},status=400)
+    except Exception as e:
+        return JsonResponse({"status":"error","message":"something went wrong"},status=500) 
+    
+#----------------------DELETE--------------------
+# modelname.objets.filter(ref_field=value).delete() 
+@csrf_exempt 
+def DeleteUserById(request,ref_id): 
+    try: 
+        if request.method=="DELETE":
+            delete=userprofile.objects.filter(id=ref_id).delete()
+            print(delete[0]) 
+            if delete[0]==0: 
+                msg="no record is found to delete" 
+            else: 
+                msg="record is delete successfully" 
+            return JsonResponse({"status":"success","msg":msg},status=200) 
+        return JsonResponse({"status":"failure","msg":"only DELETE method is allowed"},status=400) 
+    except Exception as e: 
+        return JsonResponse({"status":"error","message":"something went wrong"},status=500) 
+

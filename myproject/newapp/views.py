@@ -237,3 +237,21 @@ def getMoviesByMultipleScreens(request,first,second):
         return JsonResponse({"status":"failure","msg":"only get method allowed"},status=400)
     except Exception as e:
         return JsonResponse({"status":"error","msg":"something went wrong"})    
+    
+# -----update----
+@csrf_exempt 
+def updateOrderStatus(request,ref_status): 
+    try: 
+        if request.method=="PUT": 
+            input_data=json.loads(request.body)
+            new_status=input_data["new_status"] 
+            update=OrderDetails.objects.filter(status=ref_status).update(status=new_status) 
+            if update==0: 
+                msg="no record found with reference of id" 
+            else: 
+                msg="record is updated successfully" 
+            return JsonResponse({"status":"success","msg":msg},status=200) 
+        return JsonResponse({"status":"failure","msg":"only put method is allowed"},status=400) 
+    except Exception as e: 
+        return JsonResponse({"status":"error","message":"something went wrong"},status=500) 
+            

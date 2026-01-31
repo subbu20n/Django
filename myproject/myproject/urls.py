@@ -16,8 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from basic.views import createEmployee,createProduct,home ,about,sample,sample1,productInfo,filteringData,filterStudentsByCity,pagination,createData
-from newapp.views import getMoviesByMultipleScreens,getMoviesByScreenname,getMultipleOrdersByStatus,orderPlacing,BookMyShow,GetOrders,BookingDetails,getStudentsById,getStudentsbyId,getStudentsByDegree,getStudentsbyId
+from basic.views import DeleteUserById,updateUseragebyId,UpdateUserCityId, createEmployee,createProduct,home ,about,sample,sample1,productInfo,filteringData,filterStudentsByCity,pagination,createData
+from newapp.views import updateOrderStatus,getMoviesByMultipleScreens,getMoviesByScreenname,getMultipleOrdersByStatus,orderPlacing,BookMyShow,GetOrders,BookingDetails,getStudentsById,getStudentsbyId,getStudentsByDegree,getStudentsbyId
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('home/',home,name='home'),
@@ -40,7 +40,11 @@ urlpatterns = [
      path('id/<int:id>',getStudentsbyId),
      path('orders/<str:status>',getMultipleOrdersByStatus),
      path('moviebyscreen/<str:screen>',getMoviesByScreenname),
-     path('moviebyscreens/<str:first>/<str:second>',getMoviesByMultipleScreens)
+     path('moviebyscreens/<str:first>/<str:second>',getMoviesByMultipleScreens),
+     path('updatecity/',UpdateUserCityId), 
+     path('updateage/',updateUseragebyId),
+     path('deleteuser/<int:ref_id>',DeleteUserById),
+     path('updatestatus/',updateOrderStatus)
 ] 
-
+ 
   
