@@ -1,0 +1,117 @@
+# -----------------MYSQL Connection with Django server---------------
+
+# # -----------------HTTP METHODS----------------
+#     1. creating/inserting data ---> Post 
+#     2. retriving/getting data ---> GET 
+#     3. updating/replacing data ---> put/patch 
+#     4. deleting data ---> DELETE 
+
+# # -------------status codes-----  
+#  If work request is successful then we can give code ---> 2xx 
+#  IF you are making request to one url but that url is moved to other address then we give status code -->301 
+#  While making a request, if client/user made any mistakes ---> 4xx 
+#  If errors in server like (logic,issue,db issue,server down) --> 5xx 
+
+# #-----------HTTP CODES IMPORTANT TABLE-------------- 
+# category   status code    name          menaing                  when to use (django/Api) 
+
+# 2xx           200         ok             request sucess              GET Data , update success 
+# 2xx           201         created        resourece created           post(create student,upload file) 
+# 2xx           204         no content     delete sucessfully          delete operation 
+# 3xx           301        moved permanent  url permantly changed      old url --> new url 
+# 3xx           302        found            temporay redirect           login redirect 
+# 4xx           400        bad request      invalid input from client  validating errors 
+# 4xx           401       unauthorized      authentication required    token missing/invalid 
+# 4xx           403       forbidden         no permission              authentication but blocked  
+# 4xx           404       not found         resource not found         wrong ID/URL
+# 4xx           405      method not aloowed   wrong http method        post instead of GET 
+# 5xx           500     Internal server error  server crashed        unhandeled exception 
+# 5xx           503       service unavailable   server down            maintainance/overload  
+
+
+# # ----mysql connection with Django server ---------------- 
+
+# # ORM-object relational mapping  
+
+# # concept   ORM  
+
+# # table     model 
+# # row       object  
+# # column    field  
+# # query     orm methods   
+
+# # pymysql : module to make db connection from Django server  
+# # pip install  pymysql 
+# # we are trying to install inside venv---> 
+# # python -m pip install modulename  
+# # if we are trying to install outside of the server 
+# # pip install module_name  
+
+# # python manage.py shell -c "from django.db import connection;"
+# # " c=connection.cursor(); c.execute('SELECT DATABASE(),VERSION()'); print(c.fetchone())"
+
+# 1.open project 
+# 2. active venv 
+# 3. python -m pip install pymysql 
+# 4. cd project 
+# 5. project--> init.py --> import pymysql 
+#                           pymysql install_as_mysqldb() 
+#              # this is not required if youare using mysql-connector-python 
+
+# # settings.py  lo implement cheyali 
+#  update django "settings.py" 
+
+# 6. DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': '56_r', 
+#         'USER': 'root',
+#         'PASSWORD': 'Subbu@2003',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#         'OPTIONS': {'charset':"Utf8mb4","init_command":'SET sql_mode=STRICT_TRANS_TABLES'} 
+#     }
+# }
+
+# reason: Django's built in mysql backemd is not fully cpmatable withpython 3.13* and still trues to read an old mysql client version internally 
+
+# The Fix(works 100%) 
+
+# use **mysql-connector-python**  --> instead of default mysql backend  
+
+# step1: --> install mysql connector  
+# bash 
+# pip install mysql-connector-python 
+
+# step2: update django "settings.py" 
+ 
+
+#  #_----------steps---------- 
+#  1.inside venv ----> python -m pip install mysql-connector-python 
+# 2.. DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': '56_r', 
+#         'USER': 'root',
+#         'PASSWORD': 'Subbu@2003',
+#         'HOST': '127.0.0.1',
+#         'PORT': '3306',
+#         'OPTIONS': {'charset':"Utf8mb4","init_command":'SET sql_mode=STRICT_TRANS_TABLES'} 
+#     }
+# }
+# 3.cd project 
+# 4. python manage.py makemigrations 
+# 5.python manage.py migrate 
+# # to know the mysql is connected to django 
+# 6. python manage.py shell -c "from django.db import connection;"
+#  " c=connection.cursor(); c.execute('SELECT DATABASE(),VERSION()'); print(c.fetchone())"
+
+# run this command to check 'db' connection is done or not?  
+
+#--------(17-12-2025)----models & insert data into table using ORM----------
+#  ---------CRUD Operations---------------
+
+# 1.CREATE---> send the data within the body object through 'post method' using postman/thunder  
+# 2.READ 
+# 3.UPDATE
+# 4.DELETE

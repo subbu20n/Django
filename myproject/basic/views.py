@@ -1,13 +1,18 @@
 from django.shortcuts import render
-from django.http import HttpResponse,JsonResponse 
+from django.http import HttpResponse,JsonResponse
+import math 
 import json
-from django.views.decorators.csrf import csrf_exempt 
+from django.views.decorators.csrf import csrf_exempt
+from basic.models import UserProfile,Employee,User
+from django.db.utils import IntegrityError
+from django.contrib.auth.hashers import make_password,check_password
+import jwt
+from datetime import datetime, timedelta 
+from django.conf import settings
 
-from django.db import IntegrityError
-from basic.models import userprofile
 
 
-# Create your views here.
+# Create your views here. 
 def home(request): 
     return render(request,'home.html') 
 
@@ -220,6 +225,7 @@ def pagination(request):
 
 
 # -----------(17-12-2025)---models & insert data into the table using ORM"-------- 
+
 @csrf_exempt 
 def createData(request): 
    if request.method=="POST":
@@ -240,7 +246,6 @@ def createProduct(request):
 
 #---------to insert 'data' in table ' write logic 
 
-from basic.models import userprofile  
 @csrf_exempt 
 def createData(request):
     try: 
@@ -249,14 +254,14 @@ def createData(request):
             name=data.get("name") 
             age=data.get("age") 
             city=data.get("city") 
-            userprofile.objects.create(name=name,age=age,city=city)
+            UserProfile.objects.create(name=name,age=age,city=city)
             print(data) 
             
         return JsonResponse({"status":"success","data":data,"statuscode":201},status=201)
     except Exception as e: 
         return JsonResponse({"statuscode":500,"message":"internal server error"})   
    
-from basic.models import userprofile,Employee
+
 
 @csrf_exempt 
 def createEmployee(request): 
@@ -296,15 +301,16 @@ def createEmployee(request):
 
 # we need to send the data of "usersprofile" 
 
-# ----now i want to update city name as per ID --- 
+# # ----now i want to update city name as per ID --- 
+
 @csrf_exempt  
 def UpdateUserCityId(request): 
    try: 
-       if request.method=="PUT": 
+       if request.method=="PUT":  
            input_data=json.loads(request.body)
            ref_id=input_data["id"] 
            new_city=input_data["new_city"] 
-           update=userprofile.objects.filter(id=ref_id).update(city=new_city) 
+           update=UserProfile.objects.filter(id=ref_id).update(city=new_city) 
            if update==0: 
                msg="no records found" 
            else: 
@@ -324,7 +330,7 @@ def updateUseragebyId(request,ref_id):
             ref_id=input_data["id"] 
             new_age=input_data["new_age"] 
             
-            update = userprofile.objects.filter(id=ref_id).update(age=new_age)
+            update = UserProfile.objects.filter(id=ref_id).update(age=new_age)
             if update == 0:
                 msg="no record found with referrence of id"
             else:
@@ -334,13 +340,13 @@ def updateUseragebyId(request,ref_id):
     except Exception as e:
         return JsonResponse({"status":"error","message":"something went wrong"},status=500) 
     
-#----------------------DELETE--------------------
+# #----------------------DELETE--------------------
 # modelname.objets.filter(ref_field=value).delete() 
 @csrf_exempt 
 def DeleteUserById(request,ref_id): 
     try: 
         if request.method=="DELETE":
-            delete=userprofile.objects.filter(id=ref_id).delete()
+            delete=UserProfile.objects.filter(id=ref_id).delete()
             print(delete[0]) 
             if delete[0]==0: 
                 msg="no record is found to delete" 
@@ -351,3 +357,175 @@ def DeleteUserById(request,ref_id):
     except Exception as e: 
         return JsonResponse({"status":"error","message":"something went wrong"},status=500) 
 
+# #----------------CRUD apis completed ----------------
+# task 
+# # 1.create a model books  
+# fields---> bookname, price,author,type 
+# make migrations 
+# 2. create api to insert data into the book model 
+# 3. create api to retrive all records from book table  
+# 4. create api to update book details by id or author 
+# 5. create api to delete book from table by id 
+
+#-------(07-01-2026)---------------middleware-------------------
+
+@csrf_exempt  
+def job1(request): 
+    try: 
+        if request.method=="POST": 
+            return JsonResponse({"status":"success","message":"job1 applied successfully"}) 
+        return JsonResponse({"status":"failure","message":"only post method allowed"}) 
+    except Exception as e: 
+        return JsonResponse({"status":"error","message":"something went wrong"},status=500)     
+ 
+@csrf_exempt 
+def job2(request):
+    try: 
+        if request.method=="POST": 
+            return JsonResponse({"status":"success","message":"job2 applied successfully"}) 
+        return JsonResponse({"status":"failure","message":"only post method allowed"}) 
+    except Exception as e: 
+        return JsonResponse({"status":"error","message":"something went wrong"},status=500)     
+
+#---1.-create a account-------------->(signup)---------
+# 1. string username --> 1 middle ware
+# 2. correct email   --> 1-->1. middleware 
+# 3. strong password  ---> 1.middleware
+
+# for each one one seperate middleware middleware 
+# -------------------------2.login --------------
+# 1.correct username/email 
+# 2. correct password
+
+#-----------------(08-01-2026)----PERMONRMING (SIGNUP API) ----------------- 
+
+#---SIGNUP API -----
+
+# username --> a proper valid username and also unique 
+# email ----> a proper valid email and also unique 
+# password ---> a strong password 
+
+# using regex 
+
+# 1.username pattern 
+# 2. email regex pattern 
+# 3. password regex pattern  
+
+# url----> signup 
+# 1.model ---> username,email,password 
+# 2.middleware ---> username,email,password 
+# 3. view ---> signup ---> if al  3 'middlewares' validate then insert data into table  
+
+# this is task for u 
+
+#---------------(20-01-2026)----------AUTHENTICATION MIDDLEWARES-----------------------
+
+# 1. signup view 
+# 2. login view 
+
+# Authentication 
+# 1. signup 
+# 2. validation ---> username,email, and password 
+
+# middlware
+
+# username ----> set of rules ---> regex 
+# email --->set of rules --------> regex 
+# passwords ---> set of rules---> regex 
+
+# 3. it will create an account to the user as per user details 
+# to insert data imto the table (pure business logic) 
+# i will implement it inside the view  
+
+# 1. model ---> username , email and password  
+# 2. middleware -->  
+# 3. view ---> 
+# 4. url ---> 
+
+@csrf_exempt
+def signup(request):
+    data = json.loads(request.body)
+    hashed_password=make_password(data["password"])
+    user = User.objects.create(
+        username=data["username"],
+        email=data["email"],
+        password=hashed_password,
+        role=data["role"]
+    )
+
+    return JsonResponse({
+        "status": "success",
+        "msg": "User registered successfully"
+    }, status=201)
+
+@csrf_exempt
+def login(request):
+    user_info=json.loads(request.body)
+    username=user_info.get("username")
+    user_existing_info=list(User.objects.filter(username=username).values())
+    print(user_existing_info)
+    
+    payload={
+        "username":username,
+        "iat": datetime.utcnow(),
+        "role":user_existing_info[0].get("role"),
+        "exp": datetime.utcnow() + timedelta(seconds=settings.JWT_EXP_TIME)}
+
+    token=jwt.encode(payload,settings.JWT_SECRET_KEY,algorithm=settings.JWT_ALGORITHM)
+
+    return JsonResponse({
+
+        "status": "success",
+        "msg": "Login successful",
+        "greetings":f"welcome {username}",
+        "token":token
+    })
+
+
+#----------(28-1-2026)------------JWT token decoding&protected apis building -------------
+
+@csrf_exempt
+def protected_api(request):
+    try:
+        if request.method=="POST":
+            auth_header = request.headers.get("Authorization")
+            token=auth_header.split(" ")[1]
+            print(token[1]) #readig token from input
+            if not auth_header:
+                return JsonResponse(
+                    {"msg": "Authorization header missing"},
+                    status=401
+                )
+            try:
+                # print(auth_header)
+                decoded_payload = jwt.decode(
+                                    token,
+                                    settings.JWT_SECRET_KEY,
+                                    algorithms=[settings.JWT_ALGORITHM]
+                                    )
+                print(decoded_payload)
+                if decoded_payload.get("role")=="admin":
+                    return JsonResponse({"msg":"u have access for this api"})
+                else:
+                    return JsonResponse({"msg":"u have not access for this api"},status=401) 
+                return JsonResponse({"msg":"successfully token recieved"})
+            except Exception as e:
+                return JsonResponse({"msg":"something went wrong","error":e})
+        return JsonResponse({"msg":"done"})
+    except:
+        return JsonResponse({"msg":"only post method allowed"})
+    
+#--------Authorization ----> from client/postman 
+# request.header.get("authorization")  ---> "bearer token"---> 
+# auth = "bearer token" 
+# auth.split("") 
+# ["bearer","token"] 
+# auth[1] --->token 
+# 
+# whenever we are building protected apis ---> need to validate the user information 
+# whether he is having access or not 
+# for taht we will use tokens 
+# while login  ...token will generate 
+# we need to send those tokens while making api requests through authorization with bearer token      
+
+   

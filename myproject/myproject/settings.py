@@ -49,10 +49,16 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    'basic.middleware.middleware1',
+    'basic.middleware.middleware2',
+    'basic.middleware.sscMiddleware',
+    'basic.middleware.medicallyFitMiddleware',
+    'basic.middleware.ageValidationMiddleware', 
+    'basic.middleware.authMiddleware'
+] 
 
-ROOT_URLCONF = 'myproject.urls'
-
+ROOT_URLCONF = 'myproject.urls' 
+ 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -104,6 +110,11 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+JWT_SECRET_KEY = "mydjango-project-key"
+JWT_ALGORITHM = "HS256"
+JWT_EXP_TIME = 60 * 60   # 1 hour
 
 
 # Internationalization
