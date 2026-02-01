@@ -67,7 +67,7 @@
 
 // Django: is a web framework --> which can build a fulfilled web application easily and effeciently 
 // 1. small kind of app ---> Django we can use completely for that 
-// 2. large scale of app ---> FRONTEND + BACKEND (Django)
+// 2. large scale of app ---> FRONTEND + BACKEND (Django) 
  
 // # ----------architecture----------
 // M--->model----> to communicate with tables in the database from the backend  
