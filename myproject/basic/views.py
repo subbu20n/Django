@@ -515,11 +515,12 @@ def protected_api(request):
     except:
         return JsonResponse({"msg":"only post method allowed"})
     
-#--------Authorization ----> from client/postman 
+#--------Authorization ----> from client/postman  
+
 # request.header.get("authorization")  ---> "bearer token"---> 
 # auth = "bearer token" 
 # auth.split("") 
-# ["bearer","token"] 
+# ["bearer","token"]   
 # auth[1] --->token 
 # 
 # whenever we are building protected apis ---> need to validate the user information 

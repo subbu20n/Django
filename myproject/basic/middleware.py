@@ -104,6 +104,34 @@ class ageValidationMiddleware:
                 return response
         return JsonResponse({"status":"failure","msg":"u should have atleast 21 years to apply for this job"})
     
+# 1.any user to use application 
+# he should need to create account  -->signup/register  
+#2. to check whther he is having account or not --> user should login first 
+# as a developer --> we are storing information of user in the database of my application ---> signup 
+# as a developer --> we are checking user entered information with stored information -----> login 
+
+# -----(21-10-2025)------AUTHENICATION MIDDLEWARE HASHING-----------------
+
+# i want to show user login info in json response 
+# IloveMyIndia123 ---> encrption cd546789...---> it stores in database  
+# salting+Algorithm ----> PDBLK42 ----> algorithm 
+# while doing signup ----> we will encrypt the sensitive data and will store that sensitive data 
+# while comparing again we need to do decryption ---> 
+# makepassword()---> convert plain text into encrypted text 
+# checkpassword() ---> compare plain test with encrypted text by decrypting inside only 
+
+# hashing ---> combination of make and compare  
+
+# signup ---> is only store the information 
+# login ---> from backend it will generates a token using jwt returns that token as a response  to the user   
+# from client side, we will store that token for temporary session purpose  
+
+#    -------(23-10-2026)--------------TOKEN-------------?    
+
+# 1. tokens always generates while doing login only fromt he backend side  
+# 2. tokens will contains user information in json for format 
+# 3. while creating token we should encrypt the user data with a security key 
+# 4. jwt will follows a algorithm while generating a token 'HS256'  
 
 class authMiddleware:
     def __init__(self,get_response):
@@ -159,4 +187,18 @@ class authMiddleware:
                     return JsonResponse({"error": "Invalid password"}, status=401)
 
         response=self.get_response(request)
-        return response
+        return response 
+
+
+#--------------steps---------------
+
+# token paste  
+# token secret key 
+
+# 1.signup 
+# 2.login 
+# 3. generate token  
+# 4. validate the token 
+# 5. after validation that use it for api results  
+# 6. mostly we will use these for protected requests 
+ 

@@ -74,7 +74,7 @@
 // V---> Views---> logic is implemented here  
 // T----> Templates ---> To render the content(using HTML) in the browser  
 
-// # ---building an app with FRONTEND + BACKEND ----------
+// # ---building an app with FRONTEND + BACKEND ----------   
 
 // MODEL,VIEWS ----> plays very important role 
 // T---> optional 
